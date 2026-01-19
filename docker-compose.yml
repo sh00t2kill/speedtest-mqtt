@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  speedtest-monitor:
+    build: .
+    container_name: speedtest-mqtt-monitor
+    restart: unless-stopped
+    environment:
+      # MQTT Configuration
+      MQTT_HOST: "192.168.1.47"
+      MQTT_PORT: "1883"
+      MQTT_USERNAME: "client"
+      MQTT_PASSWORD: "client"  # You should change this
+      MQTT_BASE_TOPIC: "internet/"
+      
+      # Monitor Configuration
+      SLEEP_INTERVAL: "21600"  # 12 hours in seconds
+      
+    # Optional: if you want to see logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        
+    # Optional: health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import paho.mqtt.client as mqtt; print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
