@@ -13,7 +13,38 @@ A Docker container that runs periodic internet speed tests and publishes the res
 
 ## Quick Start
 
-1. **Using Docker Compose (Recommended):**
+### Using Pre-built Docker Image (Recommended)
+
+**Docker Run:**
+```bash
+docker run -d \
+  --name speedtest-mqtt-monitor \
+  --restart unless-stopped \
+  -e MQTT_HOST=192.168.1.47 \
+  -e MQTT_USERNAME=client \
+  -e MQTT_PASSWORD=client \
+  -e SLEEP_INTERVAL=7200 \
+  sh00t2kill/speedtest-mqtt:latest
+```
+
+**Docker Compose:**
+```yaml
+version: '3.8'
+services:
+  speedtest-monitor:
+    image: sh00t2kill/speedtest-mqtt:latest
+    container_name: speedtest-mqtt-monitor
+    restart: unless-stopped
+    environment:
+      MQTT_HOST: "192.168.1.47"
+      MQTT_USERNAME: "client"
+      MQTT_PASSWORD: "client"
+      SLEEP_INTERVAL: "7200"  # 2 hours
+```
+
+### Building from Source
+
+1. **Using Docker Compose:**
    ```bash
    docker-compose up -d
    ```
